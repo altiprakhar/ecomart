@@ -1,0 +1,108 @@
+<div class="cart-container">
+    <div class="cart-header">
+      <h1>Shopping Cart</h1>
+      <p class="item-count">{{ cartItems.length }} item(s) in cart</p>
+    </div>
+  
+    <!-- Empty Cart State -->
+    <div *ngIf="cartItems.length === 0" class="empty-cart">
+      <div class="empty-cart-icon">🛒</div>
+      <h2>Your cart is empty</h2>
+      <p>Add some products to get started!</p>
+      <button (click)="continueShopping()" class="shop-btn">
+        Continue Shopping
+      </button>
+    </div>
+  
+    <!-- Cart Items -->
+    <div *ngIf="cartItems.length > 0" class="cart-content">
+      <div class="cart-items">
+        <div class="cart-actions-top">
+          <button (click)="clearCart()" class="clear-cart-btn">
+            Clear Cart
+          </button>
+        </div>
+  
+        <div *ngFor="let item of cartItems" class="cart-item">
+          <div class="item-image">
+            <img [src]="item.thumbnail" [alt]="item.title" />
+          </div>
+  
+          <div class="item-details">
+            <h3>{{ item.title }}</h3>
+            <p class="item-price">
+              ${{ item.price | number: '1.2-2' }}
+              <span *ngIf="item.discountPercentage > 0" class="discount">
+                ({{ item.discountPercentage }}% off)
+              </span>
+            </p>
+          </div>
+  
+          <div class="item-quantity">
+            <button 
+              (click)="updateQuantity(item, -1)" 
+              class="qty-btn"
+              [disabled]="item.quantity <= 1">
+              -
+            </button>
+            <span class="qty-value">{{ item.quantity }}</span>
+            <button (click)="updateQuantity(item, 1)" class="qty-btn">
+              +
+            </button>
+          </div>
+  
+          <div class="item-total">
+            <p class="total-price">${{ item.discountedTotal | number: '1.2-2' }}</p>
+            <p *ngIf="item.discountPercentage > 0" class="original-price">
+              ${{ item.total | number: '1.2-2' }}
+            </p>
+          </div>
+  
+          <button (click)="removeItem(item.id)" class="remove-btn">
+            🗑️
+          </button>
+        </div>
+      </div>
+  
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <h2>Order Summary</h2>
+  
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span>${{ subtotal | number: '1.2-2' }}</span>
+        </div>
+  
+        <div class="summary-row discount" *ngIf="discount > 0">
+          <span>Discount:</span>
+          <span>-${{ discount | number: '1.2-2' }}</span>
+        </div>
+  
+        <div class="summary-row">
+          <span>Tax (8%):</span>
+          <span>${{ tax | number: '1.2-2' }}</span>
+        </div>
+  
+        <div class="summary-row">
+          <span>Shipping:</span>
+          <span *ngIf="shipping > 0">${{ shipping | number: '1.2-2' }}</span>
+          <span *ngIf="shipping === 0">FREE</span>
+        </div>
+  
+        <div class="summary-divider"></div>
+  
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span>${{ total | number: '1.2-2' }}</span>
+        </div>
+  
+        <button (click)="proceedToCheckout()" class="checkout-btn">
+          Proceed to Checkout
+        </button>
+  
+        <button (click)="continueShopping()" class="continue-btn">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>

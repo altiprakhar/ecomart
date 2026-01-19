@@ -1,0 +1,123 @@
+<div class="product-list-container">
+  <!-- Header Section -->
+  <div class="header">
+    <h1>Our Products</h1>
+    <p class="subtitle">Discover amazing products at great prices</p>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <!-- Search -->
+    <div class="search-box">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search products..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange(searchTerm)"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="filter-group">
+      <label>Category</label>
+      <select
+        class="filter-select"
+        [(ngModel)]="selectedCategory"
+        (change)="onCategoryChange(selectedCategory)"
+      >
+        <option value="all">All Categories</option>
+        <option *ngFor="let category of categories" [value]="category.slug">
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Sort Filter -->
+    <div class="filter-group">
+      <label>Sort By</label>
+      <select
+        class="filter-select"
+        [(ngModel)]="sortBy"
+        (change)="onSortChange(sortBy)"
+      >
+        <option value="default">Default</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="rating">Rating</option>
+        <option value="name">Name (A-Z)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading products...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button (click)="loadProducts()" class="retry-btn">Retry</button>
+  </div>
+
+  <!-- Products Grid -->
+  <div *ngIf="!loading && !error" class="products-grid">
+    <div
+      *ngFor="let product of filteredProducts; trackBy: trackByProductId"
+      class="product-card"
+    >
+      <!-- Product Image -->
+      <div class="product-image">
+        <img [src]="product.thumbnail" [alt]="product.title" />
+        <span class="discount-badge" *ngIf="product.discountPercentage > 0">
+          -{{ product.discountPercentage | number: '1.0-0' }}%
+        </span>
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <h3 class="product-title">{{ product.title }}</h3>
+        <p class="product-category">{{ product.category }}</p>
+        <p class="product-description">
+          {{ product.description.length > 80 ? (product.description | slice:0:80) + '...' : product.description }}
+        </p>
+
+        <!-- Rating -->
+        <div class="product-rating">
+          <span class="stars">
+            <span *ngFor="let star of [1,2,3,4,5]" [class.filled]="star <= product.rating">★</span>
+          </span>
+          <span class="rating-text">{{ product.rating }}</span>
+        </div>
+
+        <!-- Price and Stock -->
+        <div class="product-footer">
+          <div class="price-section">
+            <span class="price">${{ product.price | number: '1.2-2' }}</span>
+            <span class="stock" [class.low-stock]="product.stock < 20">
+              {{ product.stock }} in stock
+            </span>
+          </div>
+
+          <!-- Add to Cart Button -->
+          <button
+            (click)="addToCart(product)"
+            class="add-to-cart-btn"
+            [disabled]="product.stock === 0"
+          >
+            {{ product.stock === 0 ? 'Out of Stock' : 'Add to Cart' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Results -->
+  <div *ngIf="!loading && !error && filteredProducts.length === 0" class="no-results">
+    <p>No products found.</p>
+    <button (click)="loadProducts()" class="retry-btn">View All Products</button>
+  </div>
+</div>
