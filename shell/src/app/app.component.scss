@@ -1,0 +1,87 @@
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .navbar {
+    background: #2c3e50;
+    color: white;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .nav-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s;
+  
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    position: relative;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  
+    &:hover {
+      color: #3498db;
+    }
+  
+    .cart-badge {
+      background: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 8px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      min-width: 20px;
+      text-align: center;
+    }
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    .nav-content {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    .nav-links {
+      gap: 20px;
+    }
+  }

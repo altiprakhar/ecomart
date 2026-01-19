@@ -1,0 +1,18 @@
+<div class="app-container">
+    <nav class="navbar">
+      <div class="nav-content">
+        <a routerLink="/" class="logo">🛒 Eco-mart</a>
+        <div class="nav-links">
+          <a routerLink="/products" class="nav-link">Products</a>
+          <a routerLink="/cart" class="nav-link">
+            Cart 
+            <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+    
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
